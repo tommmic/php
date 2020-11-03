@@ -2,16 +2,6 @@ FROM php:7.3-apache
 
 RUN a2enmod rewrite
 
-RUN chmod +x /usr/local/bin/docker-php-entrypoint
-
-RUN apt-get update
-RUN apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-
-RUN apt-get update
-RUN apt-get -y install docker-ce
-
 RUN apt-get update -y \
 	&& apt-get install -y --no-install-recommends \
 	libxml2-dev \
@@ -52,3 +42,6 @@ RUN docker-php-ext-install \
 RUN yes | pecl install imagick
 RUN docker-php-ext-enable \
 	imagick
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+ENV COMPOSER_ALLOW_SUPERUSER 1
